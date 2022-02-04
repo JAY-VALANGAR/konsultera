@@ -13,7 +13,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.valangar.konsultera.Model.UserDetailModel;
 import com.valangar.konsultera.Model.UserModel;
+import com.valangar.konsultera.ViewModelUser.ViewModelDetailUser;
 import com.valangar.konsultera.ViewModelUser.ViewModelUser;
 
 import java.util.ArrayList;
@@ -21,12 +23,13 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
 
-    public static String KEY_USERNAME = "key_username", KEY_PASSWORD ="key_password";
+    public static String KEY_USERNAME = "key_username", KEY_PASSWORD ="key_password", KEY_ACCESS = "key_access";
 
     EditText etUsername, etPassword;
     Button btnLogin;
 
     ViewModelUser viewModelUser;
+    ViewModelDetailUser viewModelDetailUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,13 +52,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void businessLogic() {
-        viewModelUser.getMoviesListObserver().observe(this, new Observer<UserModel>() {
+        viewModelUser.getUserLoginListObserver().observe(this, new Observer<UserModel>() {
             @Override
             public void onChanged(UserModel userModelResponseData) {
 
                 if(userModelResponseData != null){
                     Log.i("test_api", "getMessage :- "+userModelResponseData.getMessage());
                     Log.i("test_api", "getAccess :- "+userModelResponseData.getAccess());
+                    setAccess(KEY_ACCESS, userModelResponseData.getAccess(), getApplicationContext());
                 }else{
                     Log.i("test_api", "Null data");
                 }
@@ -64,6 +68,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         viewModelUser.makeApiCall(getApplicationContext());
+
+
+
+        viewModelDetailUser.getDetailUSerList().observe(this, new Observer<UserDetailModel>() {
+            @Override
+            public void onChanged(UserDetailModel userDetailModel) {
+
+                if(userDetailModel != null){
+                    Log.i("test_api", "From access getMessage :- "+userDetailModel.getMessage());
+                }else{
+                    Log.i("test_api", "Null data");
+                }
+
+
+            }
+        });
+        viewModelDetailUser.makeApiCallForUserDetail(getApplicationContext());
     }
 
     private void initialise() {
@@ -71,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
         viewModelUser = ViewModelProviders.of(this).get(ViewModelUser.class);
+        viewModelDetailUser = ViewModelProviders.of(this).get(ViewModelDetailUser.class);
     }
 
     //----------------------------------------------------------------------------------------------
@@ -95,6 +117,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static String getPassword(String key, Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getString(key,"");
+    }
+
+
+    public static void setAccess(String key, String value, Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(key, value);
+        editor.commit();
+    }
+
+    public static String getAccess(String key, Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.getString(key,"");
     }

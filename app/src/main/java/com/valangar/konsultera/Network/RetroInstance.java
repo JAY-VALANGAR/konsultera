@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetroInstance {
 
 
-    public static String BASE_URL = "http://182.54.148.185:9005/vendor/auth/";
+    public static String BASE_URL = "http://182.54.148.185:9005/vendor/";
 
     private static Retrofit retrofit;
 

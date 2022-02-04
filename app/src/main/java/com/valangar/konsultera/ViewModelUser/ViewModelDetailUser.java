@@ -6,50 +6,46 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-
 import com.valangar.konsultera.MainActivity;
 import com.valangar.konsultera.Model.LoginModel;
+import com.valangar.konsultera.Model.UserDetailModel;
 import com.valangar.konsultera.Model.UserModel;
 import com.valangar.konsultera.Network.APIService;
 import com.valangar.konsultera.Network.RetroInstance;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ViewModelUser extends ViewModel {
 
-    private MutableLiveData<UserModel> userList;
+public class ViewModelDetailUser extends ViewModel {
 
-    public ViewModelUser(){
+    private MutableLiveData<UserDetailModel> userList;
+
+    public ViewModelDetailUser(){
         userList = new MutableLiveData<>();
     }
 
-    public MutableLiveData<UserModel> getUserLoginListObserver() {
+    public MutableLiveData<UserDetailModel> getDetailUSerList() {
         return userList;
 
     }
 
-    public void makeApiCall(Context context) {
+    public void makeApiCallForUserDetail(Context context) {
         APIService apiService = RetroInstance.getRetroClient().create(APIService.class);
 
-        LoginModel loginModel = new LoginModel(MainActivity.getUsername(MainActivity.KEY_USERNAME, context), MainActivity.getPassword(MainActivity.KEY_PASSWORD, context));
+        String access = MainActivity.getAccess(MainActivity.KEY_ACCESS, context);
 
-        Call<UserModel> call = apiService.getUserAuthMessage(loginModel);
-        call.enqueue(new Callback<UserModel>() {
+        Call<UserDetailModel> call = apiService.getUserDetails(access);
+
+        call.enqueue(new Callback<UserDetailModel>() {
             @Override
-            public void onResponse(Call<UserModel> call, Response<UserModel> response) {
+            public void onResponse(Call<UserDetailModel> call, Response<UserDetailModel> response) {
                 userList.postValue(response.body());
             }
 
             @Override
-            public void onFailure(Call<UserModel> call, Throwable t) {
+            public void onFailure(Call<UserDetailModel> call, Throwable t) {
                 userList.postValue(null);
 
                 Log.i("test_api", "ERROR :- "+t.getMessage().toString());
