@@ -12,9 +12,9 @@
 
         <ImageView
             android:id="@+id/img_profile"
-            android:layout_width="30dp"
+            android:layout_width="40dp"
             android:layout_height="50dp"
-            android:src="@drawable/ic_launcher_background"
+            android:src="@drawable/pp"
             />
 
         <TextView
