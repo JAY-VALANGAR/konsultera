@@ -7,17 +7,11 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 
-import com.valangar.konsultera.MainActivity;
+import com.valangar.konsultera.View.MainActivity;
 import com.valangar.konsultera.Model.LoginModel;
 import com.valangar.konsultera.Model.UserModel;
 import com.valangar.konsultera.Network.APIService;
 import com.valangar.konsultera.Network.RetroInstance;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;

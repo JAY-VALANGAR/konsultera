@@ -6,10 +6,8 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.valangar.konsultera.MainActivity;
-import com.valangar.konsultera.Model.LoginModel;
+import com.valangar.konsultera.View.MainActivity;
 import com.valangar.konsultera.Model.UserDetailModel;
-import com.valangar.konsultera.Model.UserModel;
 import com.valangar.konsultera.Network.APIService;
 import com.valangar.konsultera.Network.RetroInstance;
 

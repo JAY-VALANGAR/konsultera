@@ -1,4 +1,4 @@
-package com.valangar.konsultera;
+package com.valangar.konsultera.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -10,10 +10,13 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.github.ybq.android.spinkit.sprite.Sprite;
@@ -22,11 +25,9 @@ import com.valangar.konsultera.LocalDatabase.DatabaseHandler;
 import com.valangar.konsultera.LocalDatabase.UserInfo;
 import com.valangar.konsultera.Model.UserDetailModel;
 import com.valangar.konsultera.Model.UserModel;
+import com.valangar.konsultera.R;
 import com.valangar.konsultera.ViewModelUser.ViewModelDetailUser;
 import com.valangar.konsultera.ViewModelUser.ViewModelUser;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,8 +48,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initialise();
-
-
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,8 +78,7 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(UserModel userModelResponseData) {
 
                 if(userModelResponseData != null){
-                    Log.i("test_api", "getMessage :- "+userModelResponseData.getMessage());
-                    Log.i("test_api", "getAccess :- "+userModelResponseData.getAccess());
+                    onValidUser();
                     setAccess(KEY_ACCESS, userModelResponseData.getAccess(), getApplicationContext());
                 }else{
                     Log.i("test_api", "Null data");
@@ -93,6 +91,9 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    }
+
+    public void onValidUser(){
         viewModelDetailUser.getDetailUSerList().observe(this, new Observer<UserDetailModel>() {
             @Override
             public void onChanged(UserDetailModel userDetailModel) {
@@ -101,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
                     deleteAllUser();
                     for(int i = 0; i < userDetailModel.getData().getUser().size(); i++){
-                       String user_name = userDetailModel.getData().getUser().get(i);
+                        String user_name = userDetailModel.getData().getUser().get(i);
                         saveUSerDetails(user_name);
                     }
 
@@ -123,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
                 readAllUserDetails();
             }
         }, 3000);
-
     }
 
     public void saveUSerDetails(String user_name){
@@ -174,6 +174,27 @@ public class MainActivity extends AppCompatActivity {
 
         viewModelUser = ViewModelProviders.of(this).get(ViewModelUser.class);
         viewModelDetailUser = ViewModelProviders.of(this).get(ViewModelDetailUser.class);
+    }
+
+
+    public void ShowHidePass(View view){
+
+        if(view.getId()==R.id.show_pass_btn){
+
+            if(etPassword.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())){
+                ((ImageView)(view)).setImageResource(R.drawable.close_eye);
+
+                //Show Password
+                etPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            }
+            else{
+                ((ImageView)(view)).setImageResource(R.drawable.open_eye);
+
+                //Hide Password
+                etPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+
+            }
+        }
     }
 
     //----------------------------------------------------------------------------------------------

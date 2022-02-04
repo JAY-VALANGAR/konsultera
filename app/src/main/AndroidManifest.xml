@@ -12,9 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Konsultera"
         android:usesCleartextTraffic="true">
-        <activity android:name=".UserDetailActivity"></activity>
+        <activity android:name=".View.UserDetailActivity"></activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".View.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

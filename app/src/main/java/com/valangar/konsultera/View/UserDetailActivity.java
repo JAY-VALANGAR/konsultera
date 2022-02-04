@@ -1,4 +1,4 @@
-package com.valangar.konsultera;
+package com.valangar.konsultera.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -10,6 +10,7 @@ import android.os.Bundle;
 import com.valangar.konsultera.Adapter.UserInfoAdapter;
 import com.valangar.konsultera.LocalDatabase.DatabaseHandler;
 import com.valangar.konsultera.LocalDatabase.UserInfo;
+import com.valangar.konsultera.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,7 @@ public class UserDetailActivity extends AppCompatActivity {
         DatabaseHandler db = new DatabaseHandler(this);
         userInfoList = db.getAllUserInfo();
 
-        mAdapter = new UserInfoAdapter(userInfoList);
+        mAdapter = new UserInfoAdapter(userInfoList, UserDetailActivity.this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
